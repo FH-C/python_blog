@@ -25,6 +25,7 @@ def datetime(t):
 
 def create_app():
     app = Flask(__name__)
+    ##注册蓝图
     app.register_blueprint(bp)
     app.register_blueprint(blog.bp)
     app.register_blueprint(manage.bp)

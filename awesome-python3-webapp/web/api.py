@@ -88,7 +88,8 @@ def api_blog(id):
 @bp.route('/blogs/<id>/comments', methods=['POST'])
 @db_session
 def api_create_comment(id):
-    user = user = cookie2user()
+    ##通过Cookie查询登录用户
+    user = cookie2user()
     if user is None:
         raise APIPermissionError('Please signin first.')
     content = request.json['content']

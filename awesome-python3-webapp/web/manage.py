@@ -1,14 +1,9 @@
 # coding=utf-8
-import functools
 
-import hashlib, json
-import logging
-import re
 
 from flask import Blueprint, flash, g, redirect, render_template
 from pony.orm import *
 
-from handlers import COOKIE_NAME, user2cookie
 from models import db, User, Comment, Blog, next_id
 
 from apis import APIValueError, APIError

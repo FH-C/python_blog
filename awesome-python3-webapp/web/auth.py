@@ -39,6 +39,7 @@ def register():
         if len(users) > 0:
             raise APIError('register:failed', 'email', 'Email is already in use.')
         uid = next_id()
+        ##密码加密
         sha1_passwd = '%s:%s' % (uid, passwd)
         with db_session:
             User(id=uid, name=name.strip(), email=email, passwd=hashlib.sha1(sha1_passwd.encode('utf-8')).hexdigest(),
@@ -53,6 +54,7 @@ def register():
         response = make_response(json.dumps({'id': user.id, 'email': user.email, 'passwd': '******',
                                              'admin': user.admin, 'name': user.name,'image': user.image,
                                              'create_at': user.created_at}))
+        ##设置Cookie
         response.set_cookie(COOKIE_NAME, user2cookie(user, 86400), max_age=86400, httponly=True)
         response.headers['Content-Type'] = 'application/json'
         return response
