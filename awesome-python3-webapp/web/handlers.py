@@ -6,13 +6,12 @@ __author__ = 'Michael Liao'
 ' url handlers '
 
 import re, time, logging, hashlib
-from flask import render_template, request
+from flask import  request
 from models import User, Comment, Blog, next_id
-from config import configs
 from pony.orm import *
 
 COOKIE_NAME = 'awesession'
-_COOKIE_KEY = configs.session.secret
+_COOKIE_KEY = 'Awesome'
 _RE_EMAIL = re.compile(r'^[a-z0-9\.\-\_]+\@[a-z0-9\-\_]+(\.[a-z0-9\-\_]+){1,4}$')
 _RE_SHA1 = re.compile(r'^[0-9a-f]{40}$')
 

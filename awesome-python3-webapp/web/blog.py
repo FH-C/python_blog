@@ -27,7 +27,7 @@ def index():
         blogs = []
     else:
         with db_session:
-            blogs = select(b for b in Blog).order_by(desc(Blog.created_at))[p.offset: p.limit]
+            blogs = select(b for b in Blog).order_by(desc(Blog.created_at))[p.offset: p.limit+p.offset]
     user = cookie2user()
     return render_template('blogs.html', page_index=page_index, blogs=blogs, user=user, page=p)
 
@@ -56,5 +56,5 @@ def search():
     user = cookie2user()
     if num == 0:
         return render_template('blogs.html', page_index=page_index, user=user, page=p, blogs=blogs)
-    blogs = blogs.order_by(Blog.created_at)[p.offset: p.limit + p.offset]
+    blogs = blogs.order_by(Blog.created_at)[p.offset: p.limit+p.offset]
     return render_template('blogs.html', page_index=page_index, user=user, page=p, blogs=blogs)

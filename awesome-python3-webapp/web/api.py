@@ -21,23 +21,29 @@ def table2Json(t):
 
 
 @bp.route('/blogs', methods=['GET'])
+@db_session
 def api_blogs():
     page = request.args.get('page', '1')
     page_index = get_page_index(page)
-    with db_session:
-        num = len(select(b for b in Blog)[:])
+    keyword = request.args.get('keyword')
+    if keyword:
+        blogs = select(b for b in Blog if keyword in b.name)
+        num = len(blogs[:])
+    else:
+        blogs = select(b for b in Blog)
+        num = len(blogs[:])
     p = Page(num, page_index)
     if num == 0:
         return dict(page=p, blogs=())
     b = ''
-    with db_session:
-        blogs = select(b for b in Blog).order_by(desc(Blog.created_at))[p.offset: p.limit+p.offset]
-        for blog in blogs:
-            b = b + '{"id": "%s", "user_id": "%s", "user_name": "%s", "user_image": "%s", "name": "%s", "summary": "%s", "content": "%s", "created_at": %s}, ' \
-            % (blog.id, blog.user_id, blog.user_name, blog.user_image, blog.name, blog.summary, blog.content, blog.created_at)
+    blogs = blogs.order_by(desc(Blog.created_at))[p.offset: p.limit+p.offset]
+    for blog in blogs:
+        b = b + '{"id": "%s", "user_id": "%s", "user_name": "%s", "user_image": "%s", "name": "%s", "summary": "%s", "content": "%s", "created_at": %s}, ' \
+        % (blog.id, blog.user_id, blog.user_name, blog.user_image, blog.name, blog.summary, blog.content, blog.created_at)
     b = table2Json(b)
     p = json.loads(str(p))
     return dict(page=p, blogs=b)
+
 
 @bp.route('/users', methods=['GET'])
 def api_users():
