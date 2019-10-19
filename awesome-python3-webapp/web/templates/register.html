@@ -29,10 +29,10 @@ $(function () {
                     return $form.showFormError('请输入正确的Email地址');
                 }
                 if (this.password1.length < 6) {
-                    return $form.showFormError('口令长度至少为6个字符');
+                    return $form.showFormError('密码长度至少为6个字符');
                 }
                 if (this.password1 !== this.password2) {
-                    return $form.showFormError('两次输入的口令不一致');
+                    return $form.showFormError('两次输入的密码不一致');
                 }
                 var email = this.email.trim().toLowerCase();
                 $form.postJSON('/auth/register', {
@@ -73,15 +73,15 @@ $(function () {
                 </div>
             </div>
             <div class="uk-form-row">
-                <label class="uk-form-label">输入口令:</label>
+                <label class="uk-form-label">输入密码:</label>
                 <div class="uk-form-controls">
-                    <input v-model="password1" type="password" maxlength="50" placeholder="输入口令" class="uk-width-1-1">
+                    <input v-model="password1" type="password" maxlength="50" placeholder="输入密码" class="uk-width-1-1">
                 </div>
             </div>
             <div class="uk-form-row">
-                <label class="uk-form-label">重复口令:</label>
+                <label class="uk-form-label">重复密码:</label>
                 <div class="uk-form-controls">
-                    <input v-model="password2" type="password" maxlength="50" placeholder="重复口令" class="uk-width-1-1">
+                    <input v-model="password2" type="password" maxlength="50" placeholder="重复密码" class="uk-width-1-1">
                 </div>
             </div>
             <div class="uk-form-row">

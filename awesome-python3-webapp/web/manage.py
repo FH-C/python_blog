@@ -121,7 +121,7 @@ def manage_users():
 
 @bp.route('/comments', methods=['GET', 'POST'])
 @is_admin
-def manage_comments(*, page='1'):
+def manage_comments():
     page = request.args.get('page', '1')
     page_index = get_page_index(page)
     with db_session:

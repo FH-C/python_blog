@@ -5,12 +5,7 @@ __author__ = 'Michael Liao'
 
 ' url handlers '
 
-import re, time, json, logging, hashlib
-import markdown2
-
-from aiohttp import web
-
-from apis import Page, APIValueError, APIResourceNotFoundError
+import re, time, logging, hashlib
 from flask import render_template, request
 from models import User, Comment, Blog, next_id
 from config import configs

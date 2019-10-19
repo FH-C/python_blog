@@ -43,3 +43,4 @@ class Comment(db.Entity):
     user_image = Required(str, 500)
     content = Required(LongStr)
     created_at = Required(float, default=time.time)
+

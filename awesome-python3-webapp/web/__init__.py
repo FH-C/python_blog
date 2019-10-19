@@ -7,9 +7,10 @@ from flask_script import Manager
 import time
 import manage
 import api
+from datetime import datetime
 
-##filter
-def datetime(t):
+#filter
+def datetime_filter(t):
     delta = int(time.time() - t)
     if delta < 60:
         return u'1分钟前'
@@ -31,16 +32,17 @@ def create_app():
     app.register_blueprint(manage.bp)
     app.register_blueprint(api.bp)
     app.add_url_rule('/', endpoint='index')
-    app.jinja_env.filters['datetime'] = datetime
+    app.jinja_env.filters['datetime'] = datetime_filter
     app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
     return app
 
 
 app = create_app()
-app.debug = True
-manage = Manager(app=app)
+#app.debug = True
+#manage = Manager(app=app)
 
 
 if __name__ == '__main__':
-    manage.run()
+    #manage.run()
+    app.run(host='0.0.0.0', port='5000')

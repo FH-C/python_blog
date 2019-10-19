@@ -43,7 +43,7 @@ def register():
         sha1_passwd = '%s:%s' % (uid, passwd)
         with db_session:
             User(id=uid, name=name.strip(), email=email, passwd=hashlib.sha1(sha1_passwd.encode('utf-8')).hexdigest(),
-                    image='http://www.gravatar.com/avatar/%s?d=mm&s=120' % hashlib.md5(email.encode('utf-8')).hexdigest(), admin=True)
+                    image='http://www.gravatar.com/avatar/%s?d=mm&s=120' % hashlib.md5(email.encode('utf-8')).hexdigest(), admin=Flase)
             commit()
         with db_session:
             user = User.get(id=uid)
@@ -108,6 +108,13 @@ def signout():
     logging.info('user signed out.')
     return response
 
+'''
+@bp.route('/edit', methods=['GET', 'POST'])
+def edit():
+    if request.method == 'POST':
+
+    return render_template('user_edit.html')
+'''
 
 def is_login(func):
     @wraps(func)
