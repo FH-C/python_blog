@@ -91,7 +91,7 @@ def api_update_blog():
         commit()
         return blog.to_dict()
     else:
-        return render_template('manage_blog_edit.html', user=user, name=blog.name, summary=blog.summary, content=blog.content)
+        return render_template('manage_blog_edit.html', user=user, id = blog.id)
 
 
 @bp.route('/blogs/<id>/delete', methods=['POST'])

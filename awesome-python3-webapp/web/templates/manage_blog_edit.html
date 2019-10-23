@@ -10,10 +10,14 @@ var
     action = '{{ action }}';
 
 var vm;
-function initVM(blog) {
+function initVM(data) {
     vm = new Vue({
         el: '#vm',
-        data: blog,
+        data: {
+            name: data.name,
+            summary: data.summary,
+            content: data.content
+        },
         methods: {
             submit: function (event) {
                 event.preventDefault();
@@ -79,19 +83,19 @@ $(function () {
             <div class="uk-form-row">
                 <label class="uk-form-label">标题:</label>
                 <div class="uk-form-controls">
-                    <input v-model="name" name="name" type="text" placeholder="标题" class="uk-width-1-1" value={{name}} >
+                    <input v-model="name" name="name" type="text" placeholder="标题" class="uk-width-1-1">
                 </div>
             </div>
             <div class="uk-form-row">
                 <label class="uk-form-label">摘要:</label>
                 <div class="uk-form-controls">
-                    <textarea v-model="summary" rows="4" name="summary" placeholder="摘要" class="uk-width-1-1" style="resize:none;">{{summary}}</textarea>
+                    <textarea v-model="summary" rows="4" name="summary" placeholder="摘要" class="uk-width-1-1" style="resize:none;"></textarea>
                 </div>
             </div>
             <div class="uk-form-row">
                 <label class="uk-form-label">内容:</label>
                 <div class="uk-form-controls">
-                    <textarea v-model="content" rows="16" name="content" placeholder="内容" class="uk-width-1-1" style="resize:none;">{{content}}</textarea>
+                    <textarea v-model="content" rows="16" name="content" placeholder="内容" class="uk-width-1-1" style="resize:none;"></textarea>
                 </div>
             </div>
             <div class="uk-form-row">

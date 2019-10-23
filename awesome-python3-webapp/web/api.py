@@ -16,7 +16,7 @@ bp = Blueprint('api', __name__, url_prefix='/api')
 
 def table2Json(t):
     t = '[%s]' % t.rstrip().rstrip(',')
-    t = json.loads(t)
+    t = json.loads(t, strict=False)
     return t
 
 
@@ -39,7 +39,7 @@ def api_blogs():
     blogs = blogs.order_by(desc(Blog.created_at))[p.offset: p.limit+p.offset]
     for blog in blogs:
         b = b + '{"id": "%s", "user_id": "%s", "user_name": "%s", "user_image": "%s", "name": "%s", "summary": "%s", "content": "%s", "created_at": %s}, ' \
-        % (blog.id, blog.user_id, blog.user_name, blog.user_image, blog.name, blog.summary, blog.content, blog.created_at)
+        % (blog.id, blog.user_id, blog.user_name, blog.user_image, blog.name, blog.summary, blog.content.replace('"', '”'), blog.created_at)
     b = table2Json(b)
     p = json.loads(str(p))
     return dict(page=p, blogs=b)
@@ -88,7 +88,9 @@ def api_comments(*, page='1'):
 @db_session
 def api_blog(id):
     blog = Blog.get(id=id)
-    return blog.to_dict()
+    blog_dict = blog.to_dict()
+    blog_dict['content'] = blog.content
+    return blog_dict
 
 
 @bp.route('/blogs/<id>/comments', methods=['POST'])
