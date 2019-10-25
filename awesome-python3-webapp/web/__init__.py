@@ -8,6 +8,7 @@ import time
 import manage
 import api
 from datetime import datetime
+from gevent.pywsgi  import WSGIServer
 
 #filter
 def datetime_filter(t):
@@ -45,4 +46,5 @@ app = create_app()
 
 if __name__ == '__main__':
     #manage.run()
-    app.run(host='0.0.0.0', port='5000')
+    #app.run(host='0.0.0.0', port='5000')
+    WSGIServer(('0.0.0.0', 5000), app).serve_forever()
