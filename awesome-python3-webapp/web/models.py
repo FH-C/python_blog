@@ -1,4 +1,4 @@
-import time, uuid
+import uuid
 import time
 
 from pony.orm import *

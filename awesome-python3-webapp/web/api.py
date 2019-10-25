@@ -3,8 +3,10 @@ import functools
 
 import json
 
-from flask import Blueprint, request
+from flask import Blueprint
+from flask import request
 from pony.orm import *
+
 from models import db, User, Comment, Blog, next_id
 from apis import Page
 from handlers import get_page_index

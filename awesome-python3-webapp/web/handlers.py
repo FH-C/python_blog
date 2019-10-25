@@ -6,9 +6,12 @@ __author__ = 'Michael Liao'
 ' url handlers '
 
 import re, time, logging, hashlib
+
 from flask import  request
-from models import User, Comment, Blog, next_id
 from pony.orm import *
+
+from models import User, Comment, Blog, next_id
+
 
 COOKIE_NAME = 'awesession'
 _COOKIE_KEY = 'Awesome'

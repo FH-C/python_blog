@@ -1,19 +1,14 @@
 # coding=utf-8
 
 
-from flask import Blueprint, flash, g, redirect, render_template
+from flask import Blueprint, flash, redirect, render_template, request
 from pony.orm import *
 
 from models import db, User, Comment, Blog, next_id
-
 from apis import APIValueError, APIError
-from flask import request
 from apis import Page
 from handlers import get_page_index
-
-
 from handlers import cookie2user
-
 from auth import is_admin
 
 bp = Blueprint('manage', __name__, url_prefix='/manage')
