@@ -16,7 +16,6 @@ from models import db, User, Comment, Blog, next_id
 from apis import APIValueError, APIError
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
-db.generate_mapping(check_tables=True, create_tables=False)
 _RE_EMAIL = re.compile(r'^[a-z0-9\.\-\_]+\@[a-z0-9\-\_]+(\.[a-z0-9\-\_]+){1,4}$')
 _RE_SHA1 = re.compile(r'^[0-9a-f]{40}$')
 
@@ -42,7 +41,8 @@ def register():
         sha1_passwd = '%s:%s' % (uid, passwd)
         with db_session:
             User(id=uid, name=name.strip(), email=email, passwd=hashlib.sha1(sha1_passwd.encode('utf-8')).hexdigest(),
-                    image='http://www.gravatar.com/avatar/%s?d=mm&s=120' % hashlib.md5(email.encode('utf-8')).hexdigest(), admin=Flase)
+                    image='http://www.gravatar.com/avatar/%s?d=mm&s=120'
+                          % hashlib.md5(email.encode('utf-8')).hexdigest(), admin=Flase)
             commit()
         with db_session:
             user = User.get(id=uid)
@@ -53,7 +53,7 @@ def register():
         response = make_response(json.dumps({'id': user.id, 'email': user.email, 'passwd': '******',
                                              'admin': user.admin, 'name': user.name,'image': user.image,
                                              'create_at': user.created_at}))
-        #设置Cookie
+        #设置Cookie，过期时间一天
         response.set_cookie(COOKIE_NAME, user2cookie(user, 86400), max_age=86400, httponly=True)
         response.headers['Content-Type'] = 'application/json'
         return response
@@ -102,6 +102,7 @@ def signout():
     r = web.HTTPFound(referer or '/')
     r.set_cookie(COOKIE_NAME, '-deleted-', max_age=0, httponly=True)
     logging.info('user signed out.')'''
+    #重定向到index
     response = make_response(redirect('/'))
     response.delete_cookie(COOKIE_NAME)
     logging.info('user signed out.')
@@ -114,7 +115,7 @@ def edit():
 
     return render_template('user_edit.html')
 '''
-
+#验证登录，没有用到
 def is_login(func):
     @wraps(func)
     def check_login(*args,**kwargs):
@@ -126,7 +127,7 @@ def is_login(func):
                 return redirect('/')
     return check_login
 
-
+#管理权限验证
 def is_admin(func):
     @wraps(func)
     def check_admin(*args,**kwargs):

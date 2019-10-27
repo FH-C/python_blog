@@ -9,7 +9,7 @@ import manage
 import blog
 import auth
 
-
+#filter 日志创建时间
 def datetime_filter(t):
     delta = int(time.time() - t)
     if delta < 60:

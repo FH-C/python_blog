@@ -24,27 +24,33 @@ def manage():
 @is_admin
 def manage_blogs():
     page = request.args.get('page', '1')
+    #str转int
     page_index = get_page_index(page)
+    #获得blog的数量
     with db_session:
         num = len(select(b for b in Blog)[:])
     p = Page(num, page_index)
     if num == 0:
         return dict(page=p, blogs=())
+    #查询当前页面下的blog并按照创建时间排序
     with db_session:
         blogs = select(b for b in Blog).order_by(Blog.created_at)[p.offset: p.limit+p.offset]
+    #根据cookie获取当前登录用户
     user = cookie2user()
-    return render_template('manage_blogs.html', page_index=page_index, user=user, page=p)
+    return render_template('manage_blogs.html', page_index=page_index, user=user)
 
 
 @bp.route('/blogs/create', methods=['GET', 'POST'])
 @is_admin
 def blog_create():
     user = cookie2user()
+    #通过vue获取表单输入
     if request.method == 'POST':
         blog_info = request.json
         name = blog_info['name']
         summary = blog_info['summary']
         content = blog_info['content']
+        #检验输入
         if not name or not name.strip():
             raise APIValueError('name', 'name cannot be empty.')
         if not summary or not summary.strip():
@@ -52,6 +58,7 @@ def blog_create():
         if not content or not content.strip():
             raise APIValueError('content', 'content cannot be empty.')
         with db_session:
+            #插入blog
             blog = Blog(user_id=user.id, user_name=user.name, user_image=user.image,
                         name=name.strip(), summary=summary.strip(), content=content.strip())
             id = blog.id
@@ -66,6 +73,7 @@ def blog_create():
 @is_admin
 @db_session
 def api_update_blog():
+    #获取？后的属性
     id = request.args.get('id')
     user = cookie2user()
     blog = Blog.get(id=id)
@@ -88,7 +96,7 @@ def api_update_blog():
     else:
         return render_template('manage_blog_edit.html', user=user, id = blog.id)
 
-
+#删除对应id的blog
 @bp.route('/blogs/<id>/delete', methods=['POST'])
 @is_admin
 def api_delete_blog(id):

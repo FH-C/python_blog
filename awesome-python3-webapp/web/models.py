@@ -44,3 +44,4 @@ class Comment(db.Entity):
     content = Required(LongStr)
     created_at = Required(float, default=time.time)
 
+db.generate_mapping(check_tables=True, create_tables=False)

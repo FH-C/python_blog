@@ -15,7 +15,7 @@ from apis import APIValueError
 
 bp = Blueprint('api', __name__, url_prefix='/api')
 
-
+#blog序列化
 def table2Json(t):
     t = '[%s]' % t.rstrip().rstrip(',')
     t = json.loads(t, strict=False)
@@ -28,6 +28,7 @@ def api_blogs():
     page = request.args.get('page', '1')
     page_index = get_page_index(page)
     keyword = request.args.get('keyword')
+    #搜索
     if keyword:
         blogs = select(b for b in Blog if keyword in b.name)
         num = len(blogs[:])
@@ -39,6 +40,7 @@ def api_blogs():
         return dict(page=p, blogs=())
     b = ''
     blogs = blogs.order_by(desc(Blog.created_at))[p.offset: p.limit+p.offset]
+
     for blog in blogs:
         b = b + '{"id": "%s", "user_id": "%s", "user_name": "%s", "user_image": "%s", "name": "%s", "summary": "%s", "content": "%s", "created_at": %s}, ' \
         % (blog.id, blog.user_id, blog.user_name, blog.user_image, blog.name, blog.summary, blog.content.replace('"', '”'), blog.created_at)

@@ -49,6 +49,7 @@ def get_blog(id):
 def search():
     page = request.args.get('page', '1')
     page_index = get_page_index(page)
+    #keyword为搜索词，查询blog的name
     keyword = request.form['keyword']
     blogs = select(b for b in Blog if keyword in b.name)
     num = len(blogs[:])
