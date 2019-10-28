@@ -1,1 +1,1 @@
-用flask+pony实现的廖雪峰老师的博客教程
+用flask+pony实现的个人博客
