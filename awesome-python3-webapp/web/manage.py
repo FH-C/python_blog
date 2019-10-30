@@ -30,8 +30,6 @@ def manage_blogs():
     with db_session:
         num = len(select(b for b in Blog)[:])
     p = Page(num, page_index)
-    if num == 0:
-        return dict(page=p, blogs=())
     #查询当前页面下的blog并按照创建时间排序
     with db_session:
         blogs = select(b for b in Blog).order_by(Blog.created_at)[p.offset: p.limit+p.offset]
@@ -114,8 +112,6 @@ def manage_users():
     with db_session:
         num = len(select(u for u in User)[:])
     p = Page(num, page_index)
-    if num == 0:
-        return dict(page=p, blogs=())
     with db_session:
         users = select(u for u in User).order_by(User.created_at)[p.offset: p.limit+p.offset]
     user = cookie2user()
@@ -127,14 +123,12 @@ def manage_users():
 def manage_comments():
     page = request.args.get('page', '1')
     page_index = get_page_index(page)
+    user = cookie2user()
     with db_session:
         num = len(select(c for c in Comment)[:])
     p = Page(num, page_index)
-    if num == 0:
-        return dict(page=p, blogs=())
     with db_session:
         comments = select(c for c in Comment).order_by(Comment.created_at)[p.offset: p.limit+p.offset]
-    user=cookie2user()
     return render_template('manage_comments.html', page_index=page_index, user=user)
 
 

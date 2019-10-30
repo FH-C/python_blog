@@ -42,7 +42,7 @@ def register():
         with db_session:
             User(id=uid, name=name.strip(), email=email, passwd=hashlib.sha1(sha1_passwd.encode('utf-8')).hexdigest(),
                     image='http://www.gravatar.com/avatar/%s?d=mm&s=120'
-                          % hashlib.md5(email.encode('utf-8')).hexdigest(), admin=Flase)
+                          % hashlib.md5(email.encode('utf-8')).hexdigest(), admin=False)
             commit()
         with db_session:
             user = User.get(id=uid)

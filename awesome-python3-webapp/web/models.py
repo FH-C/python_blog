@@ -8,7 +8,7 @@ def next_id():
     return '%015d%s000' % (int(time.time()*1000), uuid.uuid4().hex)
 
 
-db = Database('mysql', host='localhost', user='www-data', passwd='www-data', db='awesome')
+db = Database('mysql', host='localhost', user='root', passwd='Zzz...0726', db='awesome')
 
 
 class User(db.Entity):

@@ -37,6 +37,7 @@ def api_blogs():
         num = len(blogs[:])
     p = Page(num, page_index)
     if num == 0:
+        p = json.loads(str(p))
         return dict(page=p, blogs=())
     b = ''
     blogs = blogs.order_by(desc(Blog.created_at))[p.offset: p.limit+p.offset]
@@ -57,6 +58,7 @@ def api_users():
         num = len(select(u for u in User)[:])
     p = Page(num, page_index)
     if num == 0:
+        p = json.loads(str(p))
         return dict(page=p, users=())
     u = ''
     with db_session:
@@ -76,7 +78,8 @@ def api_comments(*, page='1'):
         num = len(select(c for c in Comment)[:])
     p = Page(num, page_index)
     if num == 0:
-        return dict(page=p, users=())
+        p = json.loads(str(p))
+        return dict(page=p)
     c = ''
     with db_session:
         comments = select(c for c in Comment).order_by(desc(Comment.created_at))[p.offset: p.limit+p.offset]
